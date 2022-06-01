@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { IMousePosContext, MousePosContext } from '../DragBoard';
+import { IMousePosContext, MousePosContext } from '../components/DragBoard';
 
 export const useMousePos = (): IMousePosContext => {
   const pos = useContext(MousePosContext);
