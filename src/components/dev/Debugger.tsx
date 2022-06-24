@@ -15,6 +15,7 @@ export const Debugger: React.FC = () => {
         fontSize: '11px',
         color: 'white',
         fontFamily: 'monospace',
+        pointerEvents: 'none',
       }}
     >
       {date.toJSDate().toLocaleString()}
