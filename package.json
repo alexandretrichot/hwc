@@ -16,8 +16,8 @@
     "build": "yarn build:esm && yarn build:cjs",
     "build:esm": "tsc",
     "build:cjs": "tsc -p tsconfig.cjs.json",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "sb": "start-storybook -p 6006",
+    "build:sb": "build-storybook"
   },
   "peerDependencies": {
     "react": "^18.1.0",
