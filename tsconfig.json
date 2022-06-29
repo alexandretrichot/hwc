@@ -23,6 +23,7 @@
 		"strictNullChecks": true,
 		"suppressImplicitAnyIndexErrors": true,
 		"allowSyntheticDefaultImports": true,
+		"skipLibCheck": true
 	},
 	"include": [
 		"src"

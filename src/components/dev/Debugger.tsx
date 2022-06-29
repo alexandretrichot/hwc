@@ -1,8 +1,8 @@
 import React from 'react';
-import { useMousePos } from '../../hooks/useMousePos';
+import { useWeekPickerContext } from '../../contexts/WeekPickerContext';
 
 export const Debugger: React.FC = () => {
-  const { date } = useMousePos();
+  const { date } = useWeekPickerContext();
 
   return (
     <div
@@ -16,9 +16,10 @@ export const Debugger: React.FC = () => {
         color: 'white',
         fontFamily: 'monospace',
         pointerEvents: 'none',
+        zIndex: 1000,
       }}
     >
-      {date.toJSDate().toLocaleString()}
+      {date.toLocaleString()}
     </div>
   );
 };
