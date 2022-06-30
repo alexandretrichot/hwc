@@ -3,7 +3,7 @@ import { IWeekPickerContext } from '../contexts/WeekPickerContext';
 import { Event } from '../models/event.model';
 import { Pos } from '../models/pos.model';
 import { posToDate } from '../utils/posToDate';
-import { roundToQuarterHour } from '../utils/round';
+import { roundToQuarterHour, startOfDay } from '../utils/round';
 
 export type WeekPickerProps = {
   startDay?: Date;
@@ -18,13 +18,15 @@ export type WeekPickerProps = {
 export const useWeekPicker = (props: WeekPickerProps = {}): IWeekPickerContext => {
   const { startDay = new Date(), cellHeight = 50, daysCount = 7, events = [], onAddEventRequest = () => {} } = props;
 
+  const normalizedStartDay = useMemo(() => startOfDay(startDay), [startDay]);
+
   // column witdh
   const [width, setWidth] = useState(0);
   const cellWidth = useMemo(() => width / daysCount, [width, daysCount]);
 
   // mouse position and date
   const [pos, setPos] = useState<Pos>([0, 0]);
-  const date = useMemo(() => posToDate(pos, width, startDay, cellHeight), [pos]);
+  const date = useMemo(() => posToDate(pos, width, normalizedStartDay, cellHeight), [pos, width, normalizedStartDay, cellHeight]);
 
   // shadow event
   const [startDragDate, setStartDragDate] = useState<Date>();
@@ -53,7 +55,7 @@ export const useWeekPicker = (props: WeekPickerProps = {}): IWeekPickerContext =
     cellWidth,
     cellHeight,
 
-    startDay,
+    startDay: normalizedStartDay,
     daysCount,
 
     events,
