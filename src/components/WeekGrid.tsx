@@ -1,7 +1,6 @@
 import React, { Fragment } from 'react';
+import { DAY_IN_MILLIS } from '../constants';
 import { useWeekPickerContext } from '../contexts/WeekPickerContext';
-
-export const DAY_IN_MILLIS = 24 * 60 * 60 * 1000;
 
 export type RenderCellProps = {
   style: React.CSSProperties;
@@ -31,13 +30,12 @@ export const WeekGrid = React.forwardRef<HTMLDivElement, WeekGridProps>(({ style
     <div
       {...props}
       ref={ref}
-      style={
-        style || {
-          display: 'flex',
-          border: '#aaa solid 1px',
-          borderRadius: '4px',
-        }
-      }
+      style={{
+        position: 'absolute',
+        width: '100%',
+        display: 'flex',
+        ...style,
+      }}
     >
       {days.map((d, dIndex) => (
         <div key={dIndex} style={{ flex: '0 0 1', width: '100%', ...colStyle }}>

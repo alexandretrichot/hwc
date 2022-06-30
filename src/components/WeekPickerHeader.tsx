@@ -1,6 +1,6 @@
 import React from 'react';
+import { DAY_IN_MILLIS } from '../constants';
 import { useWeekPickerContext } from '../contexts/WeekPickerContext';
-import { DAY_IN_MILLIS } from './WeekGrid';
 
 export type WeekPickerHeaderProps = {
   locale?: string;

@@ -1,29 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ComponentStory } from '@storybook/react';
 
 import './styles.css';
 
-import { WeekPickerProvider, useWeekPicker, WeekGrid, DragPane, WeekPickerHeader } from '.';
+import { WeekPickerProvider, useWeekPicker, WeekGrid, DragPane, WeekPickerHeader, EventsRenderer } from '.';
+import { Debugger } from './components/dev/Debugger';
+import { DateTime } from 'luxon';
+import { Event } from './models/event.model';
 
 type WeekPickerProps = {
   startDay?: Date;
   daysCount?: number;
   cellHeight?: number;
+  events?: Event[];
 };
 
 const WeekPicker: React.FC<WeekPickerProps> = (props) => {
-  const weekPicker = useWeekPicker(props);
+  const [events, setEvents] = useState<Event[]>(props.events || []);
+
+  const weekPicker = useWeekPicker({
+    ...props,
+    events,
+    onAddEventRequest: (ev) => setEvents([...events, ev]),
+  });
 
   return (
     <WeekPickerProvider value={weekPicker}>
+      <Debugger />
       <div className='grid' style={{ gridTemplateColumns: '100px minmax(0, 1fr)' }}>
         <div />
         <WeekPickerHeader />
       </div>
       <div className='grid' style={{ gridTemplateColumns: '100px minmax(0, 1fr)' }}>
         <div></div>
-        <DragPane>
+        <DragPane className='border border-gray-300'>
           <WeekGrid />
+          <EventsRenderer />
         </DragPane>
       </div>
     </WeekPickerProvider>
@@ -39,5 +51,37 @@ const Template: ComponentStory<typeof WeekPicker> = (args) => <WeekPicker {...ar
 
 export const Default = Template.bind({});
 Default.args = {
-  startDay: new Date('2022-08-08'),
+  startDay: DateTime.fromISO('2022-08-08').toJSDate(),
+  daysCount: 7,
+  cellHeight: 50,
+  events: [
+    {
+      startDate: DateTime.fromISO('2022-08-10T03:30').toJSDate(),
+      endDate: DateTime.fromISO('2022-08-10T05:30').toJSDate(),
+    },
+    {
+      startDate: DateTime.fromISO('2022-08-11T04:30').toJSDate(),
+      endDate: DateTime.fromISO('2022-08-11T06').toJSDate(),
+    },
+    /* {
+      startDate: DateTime.fromISO('2022-08-15T04:30').toJSDate(),
+      endDate: DateTime.fromISO('2022-08-17T06').toJSDate(),
+    },
+    {
+      startDate: DateTime.fromISO('2022-08-06T04:30').toJSDate(),
+      endDate: DateTime.fromISO('2022-08-07T06').toJSDate(),
+    },
+    {
+      startDate: DateTime.fromISO('2022-08-07T04:30').toJSDate(),
+      endDate: DateTime.fromISO('2022-08-17T06').toJSDate(),
+    },
+    {
+      startDate: DateTime.fromISO('2022-08-07T04:30').toJSDate(),
+      endDate: DateTime.fromISO('2022-08-09T06').toJSDate(),
+    },
+    {
+      startDate: DateTime.fromISO('2022-08-12T04:30').toJSDate(),
+      endDate: DateTime.fromISO('2022-08-17T06').toJSDate(),
+    }, */
+  ],
 } as WeekPickerProps;

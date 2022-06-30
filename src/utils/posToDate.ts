@@ -1,4 +1,4 @@
-import { DateTime } from 'luxon';
+import { DAY_IN_MILLIS, MINUTE_IN_MILLIS } from '../constants';
 import { Pos } from '../models/pos.model';
 
 export const posToDate = (pos: Pos, width: number, startDay: Date, hourHeight: number): Date => {
@@ -7,5 +7,5 @@ export const posToDate = (pos: Pos, width: number, startDay: Date, hourHeight: n
 
   const dayInGrid = Math.trunc((pos[0] / (width || 1)) * 7);
 
-  return DateTime.fromJSDate(startDay).plus({ days: dayInGrid, minutes: minutesDay }).toJSDate();
+  return new Date(startDay.getTime() + dayInGrid * DAY_IN_MILLIS + minutesDay * MINUTE_IN_MILLIS);
 };

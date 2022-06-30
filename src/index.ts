@@ -3,6 +3,7 @@ export { WeekPickerContext, WeekPickerProvider, useWeekPickerContext } from './c
 export { useWeekPicker } from './hooks/useWeekPicker';
 export { DragPane } from './components/DragPane';
 export { WeekGrid } from './components/WeekGrid';
+export { EventsRenderer } from './components/EventsRenderer';
 
 export { WeekPickerHeader } from './components/WeekPickerHeader';
 
