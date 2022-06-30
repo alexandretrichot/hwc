@@ -9,7 +9,7 @@ export type DragPaneProps = React.ComponentProps<'div'> & {};
 
 export const DragPane = React.forwardRef<HTMLDivElement, DragPaneProps>(
   ({ onMouseMove = () => {}, onMouseDown = () => {}, style, children, ...props }, ref) => {
-    const { setPos, date, setWidth, setStartDragDate, requestAddEventHandler, shadowEvent } = useWeekPickerContext();
+    const { setPos, date, setWidth, setStartDragDate, requestAddEventHandler, shadowEvent, cellHeight } = useWeekPickerContext();
 
     const [element, setRef] = useState<HTMLDivElement | null>(null);
 
@@ -34,11 +34,21 @@ export const DragPane = React.forwardRef<HTMLDivElement, DragPaneProps>(
     // shadow event
     const mouseDownDate = useRef<Date>();
 
-    const mouseMoveHandler = useCallback<React.MouseEventHandler<HTMLDivElement>>(
+    const mouseDownHandler = useCallback<React.MouseEventHandler<HTMLDivElement>>(
       (ev) => {
+        if (!(ev.target instanceof Element) || !ev.target.hasAttribute('week-picker-cell')) return;
         // prevent dnd
         ev.preventDefault();
 
+        mouseDownDate.current = date;
+
+        onMouseDown(ev);
+      },
+      [setStartDragDate, onMouseDown]
+    );
+
+    const mouseMoveHandler = useCallback<React.MouseEventHandler<HTMLDivElement>>(
+      (ev) => {
         const offset = ev.currentTarget.getBoundingClientRect();
         const pos: Pos = [ev.clientX - offset.left, ev.clientY - offset.top];
 
@@ -53,25 +63,12 @@ export const DragPane = React.forwardRef<HTMLDivElement, DragPaneProps>(
       [setPos, onMouseMove, shadowEvent, setStartDragDate]
     );
 
-    const mouseDownHandler = useCallback<React.MouseEventHandler<HTMLDivElement>>(
-      (ev) => {
-        mouseDownDate.current = date;
-
-        onMouseDown(ev);
-      },
-      [setStartDragDate, onMouseDown]
-    );
-
     useEffect(() => {
       const dragEndHandler = () => {
         if (mouseDownDate.current) {
           if (shadowEvent) {
             requestAddEventHandler(shadowEvent);
           } else {
-            console.log('end', {
-              startDate: date,
-              endDate: new Date(date.getTime() + 2 * HOUR_IN_MILLIS),
-            });
             requestAddEventHandler({
               startDate: date,
               endDate: new Date(date.getTime() + 2 * HOUR_IN_MILLIS),
@@ -93,7 +90,7 @@ export const DragPane = React.forwardRef<HTMLDivElement, DragPaneProps>(
     return (
       <div
         {...props}
-        style={{ position: 'relative', ...style }}
+        style={{ position: 'relative', height: `${cellHeight * 24}px`, ...style }}
         onMouseMove={mouseMoveHandler}
         onDrag={(ev) => ev.preventDefault()}
         onMouseDown={mouseDownHandler}
