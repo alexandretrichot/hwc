@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { useIsomorphicLayoutEffect } from 'react-use';
 import { HOUR_IN_MILLIS } from '../constants';
 import { useWeekPickerContext } from '../contexts/WeekPickerContext';
 import { Pos } from '../models/pos.model';
@@ -21,7 +20,7 @@ export const DragPane = React.forwardRef<HTMLDivElement, DragPaneProps>(
       []
     );
 
-    useIsomorphicLayoutEffect(() => {
+    useEffect(() => {
       if (!element) return;
 
       observer.observe(element);
