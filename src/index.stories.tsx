@@ -2,8 +2,7 @@ import React, { useState } from 'react';
 import { ComponentStory } from '@storybook/react';
 
 import { WeekPickerProvider, useWeekPicker, WeekGrid, DragPane, WeekPickerHeader, EventsRenderer } from '.';
-import { Debugger } from './components/dev/Debugger';
-import { DateTime } from 'luxon';
+import { Debugger } from './dev/Debugger';
 import { Event } from './models/event.model';
 
 type WeekPickerProps = {
@@ -49,17 +48,21 @@ const Template: ComponentStory<typeof WeekPicker> = (args) => <WeekPicker {...ar
 
 export const Default = Template.bind({});
 Default.args = {
-  startDay: DateTime.fromISO('2022-08-08').toJSDate(),
+  startDay: new Date('2022-08-08'),
   daysCount: 7,
   cellHeight: 50,
   events: [
     {
-      startDate: DateTime.fromISO('2022-08-10T03:30').toJSDate(),
-      endDate: DateTime.fromISO('2022-08-10T05:30').toJSDate(),
+      startDate: new Date('2022-08-09T00:30'),
+      endDate: new Date('2022-08-09T01:30'),
     },
     {
-      startDate: DateTime.fromISO('2022-08-11T04:30').toJSDate(),
-      endDate: DateTime.fromISO('2022-08-11T06').toJSDate(),
+      startDate: new Date('2022-08-10T03:30'),
+      endDate: new Date('2022-08-10T05:30'),
+    },
+    {
+      startDate: new Date('2022-08-11T04:30'),
+      endDate: new Date('2022-08-11T06:00'),
     },
     /* {
       startDate: DateTime.fromISO('2022-08-15T04:30').toJSDate(),

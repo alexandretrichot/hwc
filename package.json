@@ -1,5 +1,6 @@
 {
   "name": "rhwc",
+  "description": "A react headless week calendar toolkit to build calendars like Google Calendar.",
   "version": "0.1.0",
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
@@ -30,7 +31,6 @@
     "@storybook/builder-vite": "^0.1.36",
     "@storybook/react": "^6.5.9",
     "@storybook/testing-library": "^0.0.13",
-    "@types/luxon": "^2.3.2",
     "@types/react": "^18.0.14",
     "autoprefixer": "^10.4.7",
     "babel-loader": "^8.2.5",
@@ -42,7 +42,6 @@
     "vite": "^2.9.12"
   },
   "dependencies": {
-    "luxon": "^2.4.0",
     "react-use": "^17.4.0"
   }
 }
