@@ -1,5 +1,5 @@
 import React from 'react';
-import { useWeekPickerContext } from '../../contexts/WeekPickerContext';
+import { useWeekPickerContext } from '../contexts/WeekPickerContext';
 
 export const Debugger: React.FC = () => {
   const { date } = useWeekPickerContext();
