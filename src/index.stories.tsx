@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { ComponentStory } from '@storybook/react';
 
-import './styles.css';
-
 import { WeekPickerProvider, useWeekPicker, WeekGrid, DragPane, WeekPickerHeader, EventsRenderer } from '.';
 import { Debugger } from './components/dev/Debugger';
 import { DateTime } from 'luxon';
