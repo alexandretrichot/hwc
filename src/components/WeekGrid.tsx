@@ -15,7 +15,7 @@ export type WeekGridProps = Omit<React.ComponentProps<'div'>, 'children'> & {
   colStyle?: React.CSSProperties;
   defaultStyles?: boolean;
 
-  children?: (props: RenderCellProps) => React.ReactNode;
+  children?: (props: RenderCellProps) => JSX.Element | JSX.Element[];
 };
 
 const defaultCellRenderer = ({ style }: RenderCellProps) => <div style={style} />;
@@ -45,19 +45,22 @@ export const WeekGrid = React.forwardRef<HTMLDivElement, WeekGridProps>(({ style
 
             return (
               <Fragment key={l}>
-                {(children || defaultCellRenderer)({
-                  cellHeight,
-                  cellWidth,
-                  style: {
-                    height: `${cellHeight}px`,
-                    borderLeft: x === 'start' ? undefined : `#aaa solid 1px`,
-                    borderTop: y === 'start' ? undefined : `#aaa solid 1px`,
-                    boxSizing: 'border-box',
-                  },
-                  x,
-                  y,
-                  date: d,
-                })}
+                {React.Children.map(
+                  (children || defaultCellRenderer)({
+                    cellHeight,
+                    cellWidth,
+                    style: {
+                      height: `${cellHeight}px`,
+                      borderLeft: x === 'start' ? undefined : `#aaa solid 1px`,
+                      borderTop: y === 'start' ? undefined : `#aaa solid 1px`,
+                      boxSizing: 'border-box',
+                    },
+                    x,
+                    y,
+                    date: d,
+                  }),
+                  (node) => React.cloneElement(node, { 'week-picker-cell': '' })
+                )}
               </Fragment>
             );
           })}
