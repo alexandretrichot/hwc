@@ -1,41 +1,41 @@
 import React, { useState } from 'react';
 import { ComponentStory } from '@storybook/react';
 
-import { WeekPickerProvider, useWeekPicker, WeekGrid, DragPane, WeekPickerHeader, EventsRenderer } from '.';
+import { useRhwc, RhwcProvider, RhwcHeader, RhwcDragPane, RhwcGrid, RhwcEventsRenderer } from '.';
 import { Debugger } from './dev/Debugger';
-import { Event } from './models/event.model';
+import { RhwcEvent } from './models/event.model';
 
 type WeekPickerProps = {
   startDay?: Date;
   daysCount?: number;
   cellHeight?: number;
-  events?: Event[];
+  events?: RhwcEvent[];
 };
 
 const WeekPicker: React.FC<WeekPickerProps> = (props) => {
-  const [events, setEvents] = useState<Event[]>(props.events || []);
+  const [events, setEvents] = useState<RhwcEvent[]>(props.events || []);
 
-  const weekPicker = useWeekPicker({
+  const weekPicker = useRhwc({
     ...props,
     events,
     onAddEventRequest: (ev) => setEvents([...events, ev]),
   });
 
   return (
-    <WeekPickerProvider value={weekPicker}>
+    <RhwcProvider value={weekPicker}>
       <Debugger />
       <div className='grid' style={{ gridTemplateColumns: '100px minmax(0, 1fr)' }}>
         <div />
-        <WeekPickerHeader />
+        <RhwcHeader />
       </div>
       <div className='grid' style={{ gridTemplateColumns: '100px minmax(0, 1fr)' }}>
         <div></div>
-        <DragPane className='border border-gray-300'>
-          <WeekGrid />
-          <EventsRenderer />
-        </DragPane>
+        <RhwcDragPane className='border border-gray-300'>
+          <RhwcGrid />
+          <RhwcEventsRenderer />
+        </RhwcDragPane>
       </div>
-    </WeekPickerProvider>
+    </RhwcProvider>
   );
 };
 
@@ -64,25 +64,5 @@ Default.args = {
       startDate: new Date('2022-08-11T04:30'),
       endDate: new Date('2022-08-11T06:00'),
     },
-    /* {
-      startDate: DateTime.fromISO('2022-08-15T04:30').toJSDate(),
-      endDate: DateTime.fromISO('2022-08-17T06').toJSDate(),
-    },
-    {
-      startDate: DateTime.fromISO('2022-08-06T04:30').toJSDate(),
-      endDate: DateTime.fromISO('2022-08-07T06').toJSDate(),
-    },
-    {
-      startDate: DateTime.fromISO('2022-08-07T04:30').toJSDate(),
-      endDate: DateTime.fromISO('2022-08-17T06').toJSDate(),
-    },
-    {
-      startDate: DateTime.fromISO('2022-08-07T04:30').toJSDate(),
-      endDate: DateTime.fromISO('2022-08-09T06').toJSDate(),
-    },
-    {
-      startDate: DateTime.fromISO('2022-08-12T04:30').toJSDate(),
-      endDate: DateTime.fromISO('2022-08-17T06').toJSDate(),
-    }, */
   ],
 } as WeekPickerProps;

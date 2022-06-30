@@ -1,7 +1,7 @@
 import React, { Fragment, useMemo } from 'react';
 import { DAY_IN_MILLIS, HOUR_IN_MILLIS } from '../constants';
-import { useWeekPickerContext } from '../contexts/WeekPickerContext';
-import { Event } from '../models/event.model';
+import { useRhwcContext } from '../contexts/RhwcContext';
+import { RhwcEvent } from '../models/event.model';
 import { buildIsEventVisibleFilter, getCroppedEventsByDay } from '../utils/events';
 import { startOfDay } from '../utils/round';
 
@@ -13,15 +13,14 @@ export type Rect = {
 };
 
 export type RenderCardProps = {
-  event: Event;
+  event: RhwcEvent;
   rect: Rect;
   isFirst: boolean;
   isLast: boolean;
 };
 
-export type EventsRendererProps = {
+export type RhwcEventsRendererProps = {
   renderCard?: (props: RenderCardProps) => React.ReactNode;
-  renderSCard?: (props: RenderCardProps) => React.ReactNode;
 };
 
 const defaultRenderCard = ({ rect }: RenderCardProps) => {
@@ -42,8 +41,8 @@ const defaultRenderCard = ({ rect }: RenderCardProps) => {
   );
 };
 
-export const EventsRenderer: React.FC<EventsRendererProps> = ({ renderCard }) => {
-  const { events, cellWidth, cellHeight, startDay, daysCount, shadowEvent } = useWeekPickerContext();
+export const RhwcEventsRenderer: React.FC<RhwcEventsRendererProps> = ({ renderCard }) => {
+  const { events, cellWidth, cellHeight, startDay, daysCount, shadowEvent } = useRhwcContext();
 
   const cards = useMemo<RenderCardProps[]>(() => {
     const eventsFilter = buildIsEventVisibleFilter(startDay, daysCount);

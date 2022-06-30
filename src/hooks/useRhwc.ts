@@ -1,21 +1,21 @@
 import { useCallback, useMemo, useState } from 'react';
-import { IWeekPickerContext } from '../contexts/WeekPickerContext';
-import { Event } from '../models/event.model';
+import { IRhwcContext } from '../contexts/RhwcContext';
+import { RhwcEvent } from '../models/event.model';
 import { Pos } from '../models/pos.model';
 import { posToDate } from '../utils/posToDate';
 import { roundToQuarterHour, startOfDay } from '../utils/round';
 
-export type WeekPickerProps = {
+export type UseRhwcProps = {
   startDay?: Date;
   daysCount?: number;
   cellHeight?: number;
 
-  events?: Event[];
+  events?: RhwcEvent[];
 
-  onAddEventRequest?: (ev: Event) => void;
+  onAddEventRequest?: (ev: RhwcEvent) => void;
 };
 
-export const useWeekPicker = (props: WeekPickerProps = {}): IWeekPickerContext => {
+export const useRhwc = (props: UseRhwcProps = {}): IRhwcContext => {
   const { startDay = new Date(), cellHeight = 50, daysCount = 7, events = [], onAddEventRequest = () => {} } = props;
 
   const normalizedStartDay = useMemo(() => startOfDay(startDay), [startDay]);
@@ -31,7 +31,7 @@ export const useWeekPicker = (props: WeekPickerProps = {}): IWeekPickerContext =
   // shadow event
   const [startDragDate, setStartDragDate] = useState<Date>();
 
-  const shadowEvent = useMemo<Event | undefined>(() => {
+  const shadowEvent = useMemo<RhwcEvent | undefined>(() => {
     if (!startDragDate) return undefined;
 
     const dates = [roundToQuarterHour(startDragDate), roundToQuarterHour(date)].sort((a, b) => a.getTime() - b.getTime());
@@ -43,7 +43,7 @@ export const useWeekPicker = (props: WeekPickerProps = {}): IWeekPickerContext =
   }, [startDragDate, date]);
 
   const requestAddEventHandler = useCallback(
-    (ev: Event) => {
+    (ev: RhwcEvent) => {
       onAddEventRequest(ev);
     },
     [onAddEventRequest]

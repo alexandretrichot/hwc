@@ -1,4 +1,4 @@
-export interface Event {
+export interface RhwcEvent {
   startDate: Date;
   endDate: Date;
 }

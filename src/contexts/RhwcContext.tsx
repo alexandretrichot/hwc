@@ -2,7 +2,7 @@ import React from 'react';
 import { Event } from '../models/event.model';
 import { Pos } from '../models/pos.model';
 
-export type IWeekPickerContext = {
+export type IRhwcContext = {
   pos: Pos;
   date: Date;
   startDay: Date;
@@ -20,13 +20,13 @@ export type IWeekPickerContext = {
   requestAddEventHandler: (ev: Event) => void;
 };
 
-export const WeekPickerContext = React.createContext<IWeekPickerContext | null>(null);
+export const RhwcContext = React.createContext<IRhwcContext | null>(null);
 
-export const WeekPickerProvider = WeekPickerContext.Provider;
+export const RhwcProvider = RhwcContext.Provider;
 
-export const useWeekPickerContext = () => {
-  const ctx = React.useContext(WeekPickerContext);
-  if (ctx === null) throw new Error('No WeekPicker Context found. Please Wrap WeekPicker components in <WeekPickerWrapper />');
+export const useRhwcContext = () => {
+  const ctx = React.useContext(RhwcContext);
+  if (ctx === null) throw new Error('No WeekPicker Context found. Please Wrap Rhwc components in <RhwcProvider />');
 
   return ctx;
 };

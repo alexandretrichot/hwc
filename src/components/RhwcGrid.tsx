@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { DAY_IN_MILLIS } from '../constants';
-import { useWeekPickerContext } from '../contexts/WeekPickerContext';
+import { useRhwcContext } from '../contexts/RhwcContext';
 
 export type RenderCellProps = {
   style: React.CSSProperties;
@@ -11,7 +11,7 @@ export type RenderCellProps = {
   date: Date;
 };
 
-export type WeekGridProps = Omit<React.ComponentProps<'div'>, 'children'> & {
+export type RhwcGridProps = Omit<React.ComponentProps<'div'>, 'children'> & {
   colStyle?: React.CSSProperties;
   defaultStyles?: boolean;
 
@@ -20,8 +20,8 @@ export type WeekGridProps = Omit<React.ComponentProps<'div'>, 'children'> & {
 
 const defaultCellRenderer = ({ style }: RenderCellProps) => <div style={style} />;
 
-export const WeekGrid = React.forwardRef<HTMLDivElement, WeekGridProps>(({ style, colStyle, children, ...props }, ref) => {
-  const { startDay, cellHeight, cellWidth, daysCount } = useWeekPickerContext();
+export const RhwcGrid = React.forwardRef<HTMLDivElement, RhwcGridProps>(({ style, colStyle, children, ...props }, ref) => {
+  const { startDay, cellHeight, cellWidth, daysCount } = useRhwcContext();
 
   const days = new Array(daysCount).fill(0).map((_, index) => new Date(startDay.getTime() + index * DAY_IN_MILLIS));
   const lines = new Array(24).fill(0).map((_, index) => index);

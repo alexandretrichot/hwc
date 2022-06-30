@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { HOUR_IN_MILLIS } from '../constants';
-import { useWeekPickerContext } from '../contexts/WeekPickerContext';
+import { useRhwcContext } from '../contexts/RhwcContext';
 import { Pos } from '../models/pos.model';
 import { roundToQuarterHour } from '../utils/round';
 
-export type DragPaneProps = React.ComponentProps<'div'> & {};
+export type RhwcDragPaneProps = React.ComponentProps<'div'> & {};
 
-export const DragPane = React.forwardRef<HTMLDivElement, DragPaneProps>(
+export const RhwcDragPane = React.forwardRef<HTMLDivElement, RhwcDragPaneProps>(
   ({ onMouseMove = () => {}, onMouseDown = () => {}, style, children, ...props }, ref) => {
-    const { setPos, date, setWidth, setStartDragDate, requestAddEventHandler, shadowEvent, cellHeight } = useWeekPickerContext();
+    const { setPos, date, setWidth, setStartDragDate, requestAddEventHandler, shadowEvent, cellHeight } = useRhwcContext();
 
     const [element, setRef] = useState<HTMLDivElement | null>(null);
 

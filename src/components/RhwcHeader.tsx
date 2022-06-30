@@ -1,14 +1,14 @@
 import React from 'react';
 import { DAY_IN_MILLIS } from '../constants';
-import { useWeekPickerContext } from '../contexts/WeekPickerContext';
+import { useRhwcContext } from '../contexts/RhwcContext';
 
-export type WeekPickerHeaderProps = {
+export type RhwcHeaderProps = {
   locale?: string;
   dateFormatOptions?: Intl.DateTimeFormatOptions;
 };
 
-export const WeekPickerHeader: React.FC<WeekPickerHeaderProps> = ({ locale, dateFormatOptions = { day: '2-digit', weekday: 'short' } }) => {
-  const { startDay, daysCount } = useWeekPickerContext();
+export const RhwcHeader: React.FC<RhwcHeaderProps> = ({ locale, dateFormatOptions = { day: '2-digit', weekday: 'short' } }) => {
+  const { startDay, daysCount } = useRhwcContext();
 
   const days = new Array(daysCount).fill(0).map((_, index) => new Date(startDay.getTime() + index * DAY_IN_MILLIS));
 
