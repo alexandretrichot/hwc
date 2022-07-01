@@ -1,25 +1,25 @@
 import { useState } from 'react';
-import { RhwcDragPane, RhwcEvent, RhwcEventsRenderer, RhwcGrid, RhwcHeader, RhwcProvider, useRhwc } from 'rhwc';
+import { HwcDragPane, HwcEvent, HwcEventsRenderer, HwcGrid, HwcHeader, HwcProvider, useHwc } from 'hwc';
 
 export default function Docs() {
-  const [events, setEvents] = useState<RhwcEvent[]>([]);
+  const [events, setEvents] = useState<HwcEvent[]>([]);
 
-  const cal = useRhwc({
+  const cal = useHwc({
     events,
     onAddEventRequest: (ev) => setEvents([...events, ev]),
   });
 
   return (
-    <RhwcProvider value={cal}>
+    <HwcProvider value={cal}>
       <div style={{ display: 'grid', gridTemplateColumns: '100px minmax(0, 1fr)' }}>
         <div />
-        <RhwcHeader />
+        <HwcHeader />
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '100px minmax(0, 1fr)' }}>
         <div />
-        <RhwcDragPane>
-          <RhwcGrid />
-          <RhwcEventsRenderer
+        <HwcDragPane>
+          <HwcGrid />
+          <HwcEventsRenderer
             renderCard={({ rect, isFirst }) => (
               <div
                 style={{
@@ -39,8 +39,8 @@ export default function Docs() {
               </div>
             )}
           />
-        </RhwcDragPane>
+        </HwcDragPane>
       </div>
-    </RhwcProvider>
+    </HwcProvider>
   );
 }

@@ -1,17 +1,17 @@
 import React from 'react';
 import { DAY_IN_MILLIS } from '../constants';
-import { useRhwcContext } from '../contexts/RhwcContext';
+import { useHwcContext } from '../contexts/HwcContext';
 
-export type RhwcHeaderProps = {
+export type HwcHeaderProps = {
   locale?: string;
   dateFormatOptions?: Intl.DateTimeFormatOptions;
 };
 
-export const RhwcHeader: React.FC<RhwcHeaderProps> = ({
+export const HwcHeader: React.FC<HwcHeaderProps> = ({
   locale,
   dateFormatOptions = { day: '2-digit', weekday: 'short' },
 }) => {
-  const { startDay, daysCount } = useRhwcContext();
+  const { startDay, daysCount } = useHwcContext();
 
   const days = new Array(daysCount)
     .fill(0)

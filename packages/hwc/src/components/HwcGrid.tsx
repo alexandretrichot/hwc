@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import { DAY_IN_MILLIS } from '../constants';
-import { useRhwcContext } from '../contexts/RhwcContext';
+import { useHwcContext } from '../contexts/HwcContext';
 
 export type RenderCellProps = {
   style: React.CSSProperties;
@@ -11,7 +11,7 @@ export type RenderCellProps = {
   date: Date;
 };
 
-export type RhwcGridProps = Omit<React.ComponentProps<'div'>, 'children'> & {
+export type HwcGridProps = Omit<React.ComponentProps<'div'>, 'children'> & {
   colStyle?: React.CSSProperties;
   defaultStyles?: boolean;
 
@@ -22,9 +22,9 @@ const defaultCellRenderer = ({ style }: RenderCellProps) => (
   <div style={style} />
 );
 
-export const RhwcGrid = React.forwardRef<HTMLDivElement, RhwcGridProps>(
+export const HwcGrid = React.forwardRef<HTMLDivElement, HwcGridProps>(
   ({ style, colStyle, children, ...props }, ref) => {
-    const { startDay, cellHeight, cellWidth, daysCount } = useRhwcContext();
+    const { startDay, cellHeight, cellWidth, daysCount } = useHwcContext();
 
     const days = new Array(daysCount)
       .fill(0)

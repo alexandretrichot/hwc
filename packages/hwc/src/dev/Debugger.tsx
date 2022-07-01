@@ -1,8 +1,8 @@
 import React from 'react';
-import { useRhwcContext } from '../contexts/RhwcContext';
+import { useHwcContext } from '../contexts/HwcContext';
 
 export const Debugger: React.FC = () => {
-  const { date } = useRhwcContext();
+  const { date } = useHwcContext();
 
   return (
     <div

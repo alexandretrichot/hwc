@@ -1,14 +1,14 @@
 import React, { useCallback, useRef, useState } from 'react';
 import useIsomorphicLayoutEffect from 'use-isomorphic-layout-effect';
 import { HOUR_IN_MILLIS } from '../constants';
-import { useRhwcContext } from '../contexts/RhwcContext';
+import { useHwcContext } from '../contexts/HwcContext';
 import { Pos } from '../models/pos.model';
 import { roundToQuarterHour } from '../utils/round';
 import ResizeObserver from 'resize-observer-polyfill';
 
-export type RhwcDragPaneProps = React.ComponentProps<'div'> & {};
+export type HwcDragPaneProps = React.ComponentProps<'div'> & {};
 
-export const RhwcDragPane = React.forwardRef<HTMLDivElement, RhwcDragPaneProps>(
+export const HwcDragPane = React.forwardRef<HTMLDivElement, HwcDragPaneProps>(
   (
     {
       onMouseMove = () => {},
@@ -27,7 +27,7 @@ export const RhwcDragPane = React.forwardRef<HTMLDivElement, RhwcDragPaneProps>(
       requestAddEventHandler,
       shadowEvent,
       cellHeight,
-    } = useRhwcContext();
+    } = useHwcContext();
 
     const [element, setRef] = useState<HTMLDivElement | null>(null);
 
