@@ -16,7 +16,13 @@ export type UseRhwcProps = {
 };
 
 export const useRhwc = (props: UseRhwcProps = {}): IRhwcContext => {
-  const { startDay = new Date(), cellHeight = 50, daysCount = 7, events = [], onAddEventRequest = () => {} } = props;
+  const {
+    startDay = new Date(),
+    cellHeight = 50,
+    daysCount = 7,
+    events = [],
+    onAddEventRequest = () => {},
+  } = props;
 
   const normalizedStartDay = useMemo(() => startOfDay(startDay), [startDay]);
 
@@ -25,8 +31,11 @@ export const useRhwc = (props: UseRhwcProps = {}): IRhwcContext => {
   const cellWidth = useMemo(() => width / daysCount, [width, daysCount]);
 
   // mouse position and date
-  const [pos, setPos] = useState<Pos>([0, 0]);
-  const date = useMemo(() => posToDate(pos, width, normalizedStartDay, cellHeight), [pos, width, normalizedStartDay, cellHeight]);
+  const [pos, setPos] = useState<Pos>({ x: 0, y: 0 });
+  const date = useMemo(
+    () => posToDate(pos, width, normalizedStartDay, cellHeight),
+    [pos, width, normalizedStartDay, cellHeight]
+  );
 
   // shadow event
   const [startDragDate, setStartDragDate] = useState<Date>();
@@ -34,7 +43,10 @@ export const useRhwc = (props: UseRhwcProps = {}): IRhwcContext => {
   const shadowEvent = useMemo<RhwcEvent | undefined>(() => {
     if (!startDragDate) return undefined;
 
-    const dates = [roundToQuarterHour(startDragDate), roundToQuarterHour(date)].sort((a, b) => a.getTime() - b.getTime());
+    const dates = [
+      roundToQuarterHour(startDragDate),
+      roundToQuarterHour(date),
+    ].sort((a, b) => a.getTime() - b.getTime());
 
     return {
       startDate: dates[0],

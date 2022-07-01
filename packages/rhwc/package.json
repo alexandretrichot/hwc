@@ -1,0 +1,68 @@
+{
+  "name": "rhwc",
+  "version": "0.1.0",
+  "author": "Alexandre TRICHOT",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/rhwc.esm.js",
+  "typings": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "engines": {
+    "node": ">=10"
+  },
+  "scripts": {
+    "dev": "tsdx watch",
+    "build": "tsdx build",
+    "test": "tsdx test --passWithNoTests",
+    "lint": "tsdx lint",
+    "prepare": "tsdx build",
+    "size": "size-limit",
+    "analyze": "size-limit --why"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5",
+    "jsxSingleQuote": true,
+    "arrowParens": "avoid"
+  },
+  "size-limit": [
+    {
+      "path": "dist/rhwc.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/rhwc.esm.js",
+      "limit": "10 KB"
+    }
+  ],
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
+  },
+  "dependencies": {
+    "resize-observer-polyfill": "^1.5.1",
+    "use-isomorphic-layout-effect": "^1.1.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.18.6",
+    "@size-limit/preset-small-lib": "^7.0.8",
+    "@types/react": "^18.0.14",
+    "@types/react-dom": "^18.0.5",
+    "babel-loader": "^8.2.5",
+    "husky": "^8.0.1",
+    "react-is": "^18.2.0",
+    "size-limit": "^7.0.8",
+    "tsdx": "^0.14.1",
+    "tslib": "^2.4.0",
+    "typescript": "^4.7.4"
+  }
+}

@@ -7,10 +7,15 @@ export type RhwcHeaderProps = {
   dateFormatOptions?: Intl.DateTimeFormatOptions;
 };
 
-export const RhwcHeader: React.FC<RhwcHeaderProps> = ({ locale, dateFormatOptions = { day: '2-digit', weekday: 'short' } }) => {
+export const RhwcHeader: React.FC<RhwcHeaderProps> = ({
+  locale,
+  dateFormatOptions = { day: '2-digit', weekday: 'short' },
+}) => {
   const { startDay, daysCount } = useRhwcContext();
 
-  const days = new Array(daysCount).fill(0).map((_, index) => new Date(startDay.getTime() + index * DAY_IN_MILLIS));
+  const days = new Array(daysCount)
+    .fill(0)
+    .map((_, index) => new Date(startDay.getTime() + index * DAY_IN_MILLIS));
 
   return (
     <div style={{ display: 'flex' }}>

@@ -1,41 +1,61 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
+import useIsomorphicLayoutEffect from 'use-isomorphic-layout-effect';
 import { HOUR_IN_MILLIS } from '../constants';
 import { useRhwcContext } from '../contexts/RhwcContext';
 import { Pos } from '../models/pos.model';
 import { roundToQuarterHour } from '../utils/round';
+import ResizeObserver from 'resize-observer-polyfill';
 
 export type RhwcDragPaneProps = React.ComponentProps<'div'> & {};
 
 export const RhwcDragPane = React.forwardRef<HTMLDivElement, RhwcDragPaneProps>(
-  ({ onMouseMove = () => {}, onMouseDown = () => {}, style, children, ...props }, ref) => {
-    const { setPos, date, setWidth, setStartDragDate, requestAddEventHandler, shadowEvent, cellHeight } = useRhwcContext();
+  (
+    {
+      onMouseMove = () => {},
+      onMouseDown = () => {},
+      style,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const {
+      setPos,
+      date,
+      setWidth,
+      setStartDragDate,
+      requestAddEventHandler,
+      shadowEvent,
+      cellHeight,
+    } = useRhwcContext();
 
     const [element, setRef] = useState<HTMLDivElement | null>(null);
 
-    const observer = useMemo(
-      () =>
-        new ResizeObserver(([entry]) => {
-          if (entry) setWidth(entry.contentRect.width);
-        }),
-      []
-    );
-
-    useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       if (!element) return;
 
+      const observer = new ResizeObserver(([entry]) => {
+        if (entry) setWidth(entry.contentRect.width);
+      });
       observer.observe(element);
 
       return () => {
         observer.disconnect();
       };
-    }, [element]);
+    }, [element, setWidth]);
 
     // shadow event
     const mouseDownDate = useRef<Date>();
 
-    const mouseDownHandler = useCallback<React.MouseEventHandler<HTMLDivElement>>(
-      (ev) => {
-        if (!(ev.target instanceof Element) || !ev.target.hasAttribute('week-picker-cell')) return;
+    const mouseDownHandler = useCallback<
+      React.MouseEventHandler<HTMLDivElement>
+    >(
+      ev => {
+        if (
+          !(ev.target instanceof Element) ||
+          !ev.target.hasAttribute('week-picker-cell')
+        )
+          return;
         // prevent dnd
         ev.preventDefault();
 
@@ -43,26 +63,36 @@ export const RhwcDragPane = React.forwardRef<HTMLDivElement, RhwcDragPaneProps>(
 
         onMouseDown(ev);
       },
-      [setStartDragDate, onMouseDown]
+      [date, onMouseDown]
     );
 
-    const mouseMoveHandler = useCallback<React.MouseEventHandler<HTMLDivElement>>(
-      (ev) => {
+    const mouseMoveHandler = useCallback<
+      React.MouseEventHandler<HTMLDivElement>
+    >(
+      ev => {
         const offset = ev.currentTarget.getBoundingClientRect();
-        const pos: Pos = [ev.clientX - offset.left, ev.clientY - offset.top];
+        const pos: Pos = {
+          x: ev.clientX - offset.left,
+          y: ev.clientY - offset.top,
+        };
 
         setPos(pos);
 
         onMouseMove(ev);
 
-        if (mouseDownDate.current && !shadowEvent && roundToQuarterHour(mouseDownDate.current).getTime() !== roundToQuarterHour(date).getTime()) {
+        if (
+          mouseDownDate.current &&
+          !shadowEvent &&
+          roundToQuarterHour(mouseDownDate.current).getTime() !==
+            roundToQuarterHour(date).getTime()
+        ) {
           setStartDragDate(mouseDownDate.current);
         }
       },
-      [setPos, onMouseMove, shadowEvent, setStartDragDate]
+      [setPos, onMouseMove, shadowEvent, date, setStartDragDate]
     );
 
-    useEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       const dragEndHandler = () => {
         if (mouseDownDate.current) {
           if (shadowEvent) {
@@ -89,9 +119,13 @@ export const RhwcDragPane = React.forwardRef<HTMLDivElement, RhwcDragPaneProps>(
     return (
       <div
         {...props}
-        style={{ position: 'relative', height: `${cellHeight * 24}px`, ...style }}
+        style={{
+          position: 'relative',
+          height: `${cellHeight * 24}px`,
+          ...style,
+        }}
         onMouseMove={mouseMoveHandler}
-        onDrag={(ev) => ev.preventDefault()}
+        onDrag={ev => ev.preventDefault()}
         onMouseDown={mouseDownHandler}
         ref={ref || setRef}
       >

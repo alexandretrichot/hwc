@@ -2,7 +2,10 @@ import React, { Fragment, useMemo } from 'react';
 import { DAY_IN_MILLIS, HOUR_IN_MILLIS } from '../constants';
 import { useRhwcContext } from '../contexts/RhwcContext';
 import { RhwcEvent } from '../models/event.model';
-import { buildIsEventVisibleFilter, getCroppedEventsByDay } from '../utils/events';
+import {
+  buildIsEventVisibleFilter,
+  getCroppedEventsByDay,
+} from '../utils/events';
 import { startOfDay } from '../utils/round';
 
 export type Rect = {
@@ -41,8 +44,11 @@ const defaultRenderCard = ({ rect }: RenderCardProps) => {
   );
 };
 
-export const RhwcEventsRenderer: React.FC<RhwcEventsRendererProps> = ({ renderCard }) => {
-  const { events, cellWidth, cellHeight, startDay, daysCount, shadowEvent } = useRhwcContext();
+export const RhwcEventsRenderer: React.FC<RhwcEventsRendererProps> = ({
+  renderCard,
+}) => {
+  const { events, cellWidth, cellHeight, startDay, daysCount, shadowEvent } =
+    useRhwcContext();
 
   const cards = useMemo<RenderCardProps[]>(() => {
     const eventsFilter = buildIsEventVisibleFilter(startDay, daysCount);
@@ -50,7 +56,7 @@ export const RhwcEventsRenderer: React.FC<RhwcEventsRendererProps> = ({ renderCa
     return [...events, ...(shadowEvent ? [shadowEvent] : [])]
       .filter(eventsFilter)
       .map(getCroppedEventsByDay)
-      .map((croppeds) =>
+      .map(croppeds =>
         croppeds.map((ev, index) => ({
           ...ev,
           isFirst: index === 0,
@@ -59,11 +65,15 @@ export const RhwcEventsRenderer: React.FC<RhwcEventsRendererProps> = ({ renderCa
       )
       .flat()
       .filter(eventsFilter)
-      .map((ev) => {
-        const day = (startOfDay(ev.startDate).getTime() - startOfDay(startDay).getTime()) / DAY_IN_MILLIS;
+      .map(ev => {
+        const day =
+          (startOfDay(ev.startDate).getTime() -
+            startOfDay(startDay).getTime()) /
+          DAY_IN_MILLIS;
 
         const duration = ev.endDate.getTime() - ev.startDate.getTime();
-        const millisFromDayStart = ev.startDate.getTime() - startOfDay(ev.startDate).getTime();
+        const millisFromDayStart =
+          ev.startDate.getTime() - startOfDay(ev.startDate).getTime();
 
         return {
           event: {
@@ -80,12 +90,16 @@ export const RhwcEventsRenderer: React.FC<RhwcEventsRendererProps> = ({ renderCa
           isLast: ev.isLast,
         };
       });
-  }, [events, cellWidth, startDay, daysCount, shadowEvent]);
+  }, [events, cellWidth, startDay, daysCount, shadowEvent, cellHeight]);
 
   return (
     <div style={{ position: 'relative' }}>
       {cards.map((cardProps, index) => {
-        return <Fragment key={index}>{(renderCard || defaultRenderCard)(cardProps)}</Fragment>;
+        return (
+          <Fragment key={index}>
+            {(renderCard || defaultRenderCard)(cardProps)}
+          </Fragment>
+        );
       })}
     </div>
   );

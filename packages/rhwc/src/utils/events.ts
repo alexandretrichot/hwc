@@ -2,12 +2,17 @@ import { DAY_IN_MILLIS } from '../constants';
 import { RhwcEvent } from '../models/event.model';
 import { startOfDay } from './round';
 
-export const buildIsEventVisibleFilter = (startDay: Date, daysCount: number) => {
+export const buildIsEventVisibleFilter = (
+  startDay: Date,
+  daysCount: number
+) => {
   const startMillis = startOfDay(startDay).getTime();
   const endMillis = startMillis + daysCount * DAY_IN_MILLIS;
 
   return (ev: RhwcEvent) => {
-    return ev.startDate.getTime() < endMillis && ev.endDate.getTime() > startMillis;
+    return (
+      ev.startDate.getTime() < endMillis && ev.endDate.getTime() > startMillis
+    );
   };
 };
 
@@ -25,7 +30,9 @@ export const getCroppedEventsByDay = (ev: RhwcEvent): RhwcEvent[] => {
     const isOverflow = nextDayMillis < evEndMillis;
 
     events.push({
-      startDate: new Date(lastCroppedEvent ? lastCroppedEvent.endDate : ev.startDate),
+      startDate: new Date(
+        lastCroppedEvent ? lastCroppedEvent.endDate : ev.startDate
+      ),
       endDate: new Date(isOverflow ? nextDayMillis : evEndMillis),
     });
 
