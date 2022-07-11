@@ -34,7 +34,7 @@ export const useHwc = (props: UseHwcProps = {}): IHwcContext => {
   const [pos, setPos] = useState<Pos>({ x: 0, y: 0 });
   const date = useMemo(
     () => posToDate(pos, width, normalizedStartDay, cellHeight, daysCount),
-    [pos, width, normalizedStartDay, cellHeight]
+    [pos, width, normalizedStartDay, cellHeight, daysCount]
   );
 
   // shadow event

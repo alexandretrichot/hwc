@@ -6,7 +6,7 @@ export const posToDate = (
   width: number,
   startDay: Date,
   hourHeight: number,
-  daysCount: number,
+  daysCount: number
 ): Date => {
   const minuteHeight = 60 / hourHeight;
   const minutesDay = pos.y * minuteHeight;
