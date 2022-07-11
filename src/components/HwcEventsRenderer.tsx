@@ -18,34 +18,20 @@ export type Rect = {
 export type RenderCardProps = {
   event: HwcEvent;
   rect: Rect;
+  style: Pick<
+    React.CSSProperties,
+    'position' | 'width' | 'height' | 'left' | 'top'
+  >;
   isFirst: boolean;
   isLast: boolean;
 };
 
 export type HwcEventsRendererProps = {
-  renderCard?: (props: RenderCardProps) => React.ReactNode;
-};
-
-const defaultCardRenderer = ({ rect }: RenderCardProps) => {
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        backgroundColor: 'orange',
-        border: 'solid orangered 2px',
-        boxSizing: 'border-box',
-        borderRadius: '3px',
-        width: `${rect.width - 2}px`,
-        height: `${rect.height - 2}px`,
-        left: `${rect.left}px`,
-        top: `${rect.top}px`,
-      }}
-    />
-  );
+  renderCard: (props: RenderCardProps) => React.ReactNode;
 };
 
 export const HwcEventsRenderer: React.FC<HwcEventsRendererProps> = ({
-  renderCard = defaultCardRenderer,
+  renderCard,
 }) => {
   const {
     events,
@@ -95,7 +81,17 @@ export const HwcEventsRenderer: React.FC<HwcEventsRendererProps> = ({
           isFirst: ev.isFirst,
           isLast: ev.isLast,
         };
-      });
+      })
+      .map(c => ({
+        ...c,
+        style: {
+          position: 'absolute',
+          width: `${c.rect.width - 2}px`,
+          height: `${c.rect.height - 2}px`,
+          left: `${c.rect.left}px`,
+          top: `${c.rect.top}px`,
+        },
+      }));
   }, [events, cellWidth, startDay, daysCount, shadowEvent, cellHeight]);
 
   return (

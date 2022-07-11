@@ -48,7 +48,7 @@ export const Basic: React.FC<BasicProps> = ({
         <div></div>
         <HwcDragPane>
           <HwcGrid />
-          <HwcEventsRenderer />
+          <HwcEventsRenderer renderCard={({ style }) => <div className={`bg-slate-100 border border-slate-300 rounded shadow hover:shadow-lg transition-shadow cursor-grab`} style={style}></div>} />
         </HwcDragPane>
       </div>
     </HwcProvider>
