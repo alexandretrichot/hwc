@@ -5,12 +5,13 @@ export const posToDate = (
   pos: Pos,
   width: number,
   startDay: Date,
-  hourHeight: number
+  hourHeight: number,
+  daysCount: number,
 ): Date => {
   const minuteHeight = 60 / hourHeight;
   const minutesDay = pos.y * minuteHeight;
 
-  const dayInGrid = Math.trunc((pos.x / (width || 1)) * 7);
+  const dayInGrid = Math.trunc((pos.x / (width || 1)) * daysCount);
 
   return new Date(
     startDay.getTime() +

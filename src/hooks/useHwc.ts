@@ -33,7 +33,7 @@ export const useHwc = (props: UseHwcProps = {}): IHwcContext => {
   // mouse position and date
   const [pos, setPos] = useState<Pos>({ x: 0, y: 0 });
   const date = useMemo(
-    () => posToDate(pos, width, normalizedStartDay, cellHeight),
+    () => posToDate(pos, width, normalizedStartDay, cellHeight, daysCount),
     [pos, width, normalizedStartDay, cellHeight]
   );
 
