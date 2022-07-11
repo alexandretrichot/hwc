@@ -1,6 +1,11 @@
 src
 node_modules
-.turbo
 .npmignore
 .gitignore
+.DS_Store
+yarn.lock
+storybook-static
+
 tsconfig.json
+postcss.config.js
+tailwind.config.js
