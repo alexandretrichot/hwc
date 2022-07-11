@@ -14,4 +14,8 @@ export default {
 const Template: ComponentStory<typeof Basic> = args => <Basic {...args} />;
 
 export const Default = Template.bind({});
-Default.args = {};
+Default.args = {
+  startDay: new Date(),
+  daysToShow: 7,
+  cellHeight: 50,
+};
