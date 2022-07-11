@@ -26,7 +26,7 @@ export type HwcEventsRendererProps = {
   renderCard?: (props: RenderCardProps) => React.ReactNode;
 };
 
-const defaultRenderCard = ({ rect }: RenderCardProps) => {
+const defaultCardRenderer = ({ rect }: RenderCardProps) => {
   return (
     <div
       style={{
@@ -45,10 +45,16 @@ const defaultRenderCard = ({ rect }: RenderCardProps) => {
 };
 
 export const HwcEventsRenderer: React.FC<HwcEventsRendererProps> = ({
-  renderCard,
+  renderCard = defaultCardRenderer,
 }) => {
-  const { events, cellWidth, cellHeight, startDay, daysCount, shadowEvent } =
-    useHwcContext();
+  const {
+    events,
+    cellWidth,
+    cellHeight,
+    startDay,
+    daysCount,
+    shadowEvent,
+  } = useHwcContext();
 
   const cards = useMemo<RenderCardProps[]>(() => {
     const eventsFilter = buildIsEventVisibleFilter(startDay, daysCount);
@@ -95,11 +101,7 @@ export const HwcEventsRenderer: React.FC<HwcEventsRendererProps> = ({
   return (
     <div style={{ position: 'relative' }}>
       {cards.map((cardProps, index) => {
-        return (
-          <Fragment key={index}>
-            {(renderCard || defaultRenderCard)(cardProps)}
-          </Fragment>
-        );
+        return <Fragment key={index}>{renderCard(cardProps)}</Fragment>;
       })}
     </div>
   );

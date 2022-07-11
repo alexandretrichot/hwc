@@ -15,7 +15,7 @@ export type HwcGridProps = Omit<React.ComponentProps<'div'>, 'children'> & {
   colStyle?: React.CSSProperties;
   defaultStyles?: boolean;
 
-  children?: (props: RenderCellProps) => JSX.Element | JSX.Element[];
+  renderCell?: (props: RenderCellProps) => JSX.Element | JSX.Element[];
 };
 
 const defaultCellRenderer = ({ style }: RenderCellProps) => (
@@ -23,7 +23,7 @@ const defaultCellRenderer = ({ style }: RenderCellProps) => (
 );
 
 export const HwcGrid = React.forwardRef<HTMLDivElement, HwcGridProps>(
-  ({ style, colStyle, children, ...props }, ref) => {
+  ({ style, colStyle, renderCell = defaultCellRenderer, ...props }, ref) => {
     const { startDay, cellHeight, cellWidth, daysCount } = useHwcContext();
 
     const days = new Array(daysCount)
@@ -60,7 +60,7 @@ export const HwcGrid = React.forwardRef<HTMLDivElement, HwcGridProps>(
               return (
                 <Fragment key={l}>
                   {React.Children.map(
-                    (children || defaultCellRenderer)({
+                    renderCell({
                       cellHeight,
                       cellWidth,
                       style: {
