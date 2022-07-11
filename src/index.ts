@@ -14,4 +14,4 @@ export {
 } from './components/HwcEventsRenderer';
 
 export { HwcHeader, HwcHeaderProps } from './components/HwcHeader';
-export type { HwcEvent } from './models/event.model';
+export { HwcEvent } from './models/event.model';

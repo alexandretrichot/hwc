@@ -1,0 +1,20 @@
+import React from 'react';
+import { HwcEvent } from '../models/event.model';
+import { Pos } from '../models/pos.model';
+export declare type IHwcContext = {
+    pos: Pos;
+    date: Date;
+    startDay: Date;
+    daysCount: number;
+    cellHeight: number;
+    cellWidth: number;
+    events: HwcEvent[];
+    setPos: (pos: Pos) => void;
+    setWidth: (width: number) => void;
+    shadowEvent?: HwcEvent;
+    setStartDragDate: (date?: Date) => void;
+    requestAddEventHandler: (ev: HwcEvent) => void;
+};
+export declare const HwcContext: React.Context<IHwcContext | null>;
+export declare const HwcProvider: React.Provider<IHwcContext | null>;
+export declare const useHwcContext: () => IHwcContext;
