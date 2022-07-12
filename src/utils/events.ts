@@ -1,5 +1,5 @@
 import { DAY_IN_MILLIS } from '../constants';
-import { HwcEvent } from '../models/event.model';
+import { HwcEvent } from '../types';
 import { startOfDay } from './round';
 
 export const buildIsEventVisibleFilter = (
@@ -16,8 +16,8 @@ export const buildIsEventVisibleFilter = (
   };
 };
 
-export const getCroppedEventsByDay = (ev: HwcEvent): HwcEvent[] => {
-  const events: HwcEvent[] = [];
+export const getCroppedEventsByDay = <EvType extends HwcEvent>(ev: EvType): EvType[] => {
+  const events: EvType[] = [];
 
   const evEndMillis = ev.endDate.getTime();
 
@@ -30,6 +30,7 @@ export const getCroppedEventsByDay = (ev: HwcEvent): HwcEvent[] => {
     const isOverflow = nextDayMillis < evEndMillis;
 
     events.push({
+      ...ev,
       startDate: new Date(
         lastCroppedEvent ? lastCroppedEvent.endDate : ev.startDate
       ),
