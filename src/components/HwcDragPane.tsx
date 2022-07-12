@@ -2,8 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import useIsomorphicLayoutEffect from 'use-isomorphic-layout-effect';
 import { HOUR_IN_MILLIS } from '../constants';
 import { useHwcContext } from '../contexts/HwcContext';
-import { Pos } from '../models/pos.model';
-import { roundToQuarterHour } from '../utils/round';
+import { roundToQuarterHour, roundToSemiHour } from '../utils/round';
 import ResizeObserver from 'resize-observer-polyfill';
 
 export type HwcDragPaneProps = React.ComponentProps<'div'> & {};
@@ -71,12 +70,11 @@ export const HwcDragPane = React.forwardRef<HTMLDivElement, HwcDragPaneProps>(
     >(
       ev => {
         const offset = ev.currentTarget.getBoundingClientRect();
-        const pos: Pos = {
+
+        setPos({
           x: ev.clientX - offset.left,
           y: ev.clientY - offset.top,
-        };
-
-        setPos(pos);
+        });
 
         onMouseMove(ev);
 
@@ -98,9 +96,11 @@ export const HwcDragPane = React.forwardRef<HTMLDivElement, HwcDragPaneProps>(
           if (shadowEvent) {
             requestAddEventHandler(shadowEvent);
           } else {
+            const roundedDate = roundToSemiHour(date);
+
             requestAddEventHandler({
-              startDate: date,
-              endDate: new Date(date.getTime() + 2 * HOUR_IN_MILLIS),
+              startDate: roundedDate,
+              endDate: new Date(roundedDate.getTime() + 2 * HOUR_IN_MILLIS),
             });
           }
         }
