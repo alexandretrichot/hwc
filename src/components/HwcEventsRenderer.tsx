@@ -1,104 +1,60 @@
-import React, { Fragment, useMemo } from 'react';
-import { DAY_IN_MILLIS, HOUR_IN_MILLIS } from '../constants';
-import { useHwcContext } from '../contexts/HwcContext';
-import { HwcEvent } from '../models/event.model';
-import {
-  buildIsEventVisibleFilter,
-  getCroppedEventsByDay,
-} from '../utils/events';
-import { startOfDay } from '../utils/round';
+import React from 'react';
+import { useCards } from '../hooks/useCards';
+import { useShadowCards } from '../hooks/useShadowCards';
+import { HwcEvent, Rect } from '../types';
 
-export type Rect = {
-  width: number;
-  height: number;
-  left: number;
-  top: number;
-};
-
-export type RenderCardProps = {
-  event: HwcEvent;
+export type RenderCardProps<EvType extends HwcEvent> = {
+  event: EvType;
+  index: number;
   rect: Rect;
-  style: Pick<
-    React.CSSProperties,
-    'position' | 'width' | 'height' | 'left' | 'top'
-  >;
+  style: Pick<React.CSSProperties, 'width' | 'height'>;
   isFirst: boolean;
   isLast: boolean;
 };
 
-export type HwcEventsRendererProps = {
-  renderCard: (props: RenderCardProps) => React.ReactNode;
+export type RenderShadowCardProps = RenderCardProps<HwcEvent>;
+
+export type HwcEventsRendererProps<EvType extends HwcEvent> = {
+  renderCard: (props: RenderCardProps<EvType>) => React.ReactNode;
+  renderShadowCard: (props: RenderShadowCardProps) => React.ReactNode;
 };
 
-export const HwcEventsRenderer: React.FC<HwcEventsRendererProps> = ({
+export const HwcEventsRenderer = <EvType extends HwcEvent>({
   renderCard,
-}) => {
-  const {
-    events,
-    cellWidth,
-    cellHeight,
-    startDay,
-    daysCount,
-    shadowEvent,
-  } = useHwcContext();
-
-  const cards = useMemo<RenderCardProps[]>(() => {
-    const eventsFilter = buildIsEventVisibleFilter(startDay, daysCount);
-
-    return [...events, ...(shadowEvent ? [shadowEvent] : [])]
-      .filter(eventsFilter)
-      .map(getCroppedEventsByDay)
-      .map(croppeds =>
-        croppeds.map((ev, index) => ({
-          ...ev,
-          isFirst: index === 0,
-          isLast: index === croppeds.length - 1,
-        }))
-      )
-      .flat()
-      .filter(eventsFilter)
-      .map(ev => {
-        const day =
-          (startOfDay(ev.startDate).getTime() -
-            startOfDay(startDay).getTime()) /
-          DAY_IN_MILLIS;
-
-        const duration = ev.endDate.getTime() - ev.startDate.getTime();
-        const millisFromDayStart =
-          ev.startDate.getTime() - startOfDay(ev.startDate).getTime();
-
-        return {
-          event: {
-            startDate: ev.startDate,
-            endDate: ev.endDate,
-          },
-          rect: {
-            width: cellWidth,
-            height: (duration / HOUR_IN_MILLIS) * cellHeight,
-            left: day * cellWidth,
-            top: (millisFromDayStart / HOUR_IN_MILLIS) * cellHeight,
-          },
-          isFirst: ev.isFirst,
-          isLast: ev.isLast,
-        };
-      })
-      .map(c => ({
-        ...c,
-        style: {
-          position: 'absolute',
-          width: `${c.rect.width - 2}px`,
-          height: `${c.rect.height - 2}px`,
-          left: `${c.rect.left}px`,
-          top: `${c.rect.top}px`,
-        },
-      }));
-  }, [events, cellWidth, startDay, daysCount, shadowEvent, cellHeight]);
+  renderShadowCard,
+}: HwcEventsRendererProps<EvType>): React.ReactElement => {
+  const cards = useCards<EvType>();
+  const shadowCards = useShadowCards();
 
   return (
     <div style={{ position: 'relative' }}>
-      {cards.map((cardProps, index) => {
-        return <Fragment key={index}>{renderCard(cardProps)}</Fragment>;
-      })}
+      {cards.map((cardProps, index) => (
+        <div
+          key={index}
+          style={{
+            ...cardProps.style,
+            position: 'absolute',
+            left: `${cardProps.rect.left}px`,
+            top: `${cardProps.rect.top}px`,
+          }}
+        >
+          {renderCard(cardProps)}
+          <div className='' />
+        </div>
+      ))}
+      {shadowCards.map((shadowCardProps, index) => (
+        <div
+          key={index}
+          style={{
+            ...shadowCardProps.style,
+            position: 'absolute',
+            left: `${shadowCardProps.rect.left}px`,
+            top: `${shadowCardProps.rect.top}px`,
+          }}
+        >
+          {renderShadowCard(shadowCardProps)}
+        </div>
+      ))}
     </div>
   );
 };

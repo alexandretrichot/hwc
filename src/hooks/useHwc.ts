@@ -1,21 +1,25 @@
 import { useCallback, useMemo, useState } from 'react';
 import { IHwcContext } from '../contexts/HwcContext';
-import { HwcEvent } from '../models/event.model';
-import { Pos } from '../models/pos.model';
+import { Pos, HwcEvent } from '../types';
 import { posToDate } from '../utils/posToDate';
-import { roundToQuarterHour, startOfDay } from '../utils/round';
+import { startOfDay } from '../utils/round';
+import { useMoveEvent } from './useMoveEvent';
+import { useShadowEvent } from './useShadowEvent';
 
-export type UseHwcProps = {
+export type UseHwcProps<EvType extends HwcEvent> = {
   startDay?: Date;
   daysCount?: number;
   cellHeight?: number;
 
-  events?: HwcEvent[];
+  events?: EvType[];
 
   onAddEventRequest?: (ev: HwcEvent) => void;
+  onEventMove?: (index: number, newEvent: EvType, lastEvent: EvType) => void;
 };
 
-export const useHwc = (props: UseHwcProps = {}): IHwcContext => {
+export const useHwc = <EvType extends HwcEvent>(
+  props: UseHwcProps<EvType> = {}
+): IHwcContext<EvType> => {
   const {
     startDay = new Date(),
     cellHeight = 50,
@@ -38,28 +42,19 @@ export const useHwc = (props: UseHwcProps = {}): IHwcContext => {
   );
 
   // shadow event
-  const [startDragDate, setStartDragDate] = useState<Date>();
+  const [shadowEvent, setStartDragDate] = useShadowEvent(date);
 
-  const shadowEvent = useMemo<HwcEvent | undefined>(() => {
-    if (!startDragDate) return undefined;
-
-    const dates = [
-      roundToQuarterHour(startDragDate),
-      roundToQuarterHour(date),
-    ].sort((a, b) => a.getTime() - b.getTime());
-
-    return {
-      startDate: dates[0],
-      endDate: dates[1],
-    };
-  }, [startDragDate, date]);
-
+  const {} = useMoveEvent();
+  
+  // handlers
   const requestAddEventHandler = useCallback(
     (ev: HwcEvent) => {
       onAddEventRequest(ev);
     },
     [onAddEventRequest]
   );
+
+  
 
   return {
     pos,

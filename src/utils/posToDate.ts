@@ -1,5 +1,5 @@
 import { DAY_IN_MILLIS, MINUTE_IN_MILLIS } from '../constants';
-import { Pos } from '../models/pos.model';
+import { Pos } from '../types';
 
 export const posToDate = (
   pos: Pos,
