@@ -39,12 +39,11 @@ export const GripRenderer = <EvType extends HwcEvent>({
   const style = useMemo<GripStyle>(() => {
     return {
       position: 'absolute',
-      top: position === 'start' ? '-2px' : undefined,
-      bottom: position === 'end' ? '-2px' : undefined,
-      height: '5px',
+      top: position === 'start' ? '-4px' : undefined,
+      bottom: position === 'end' ? '-4px' : undefined,
+      height: '9px',
       width: '100%',
       cursor: 'ns-resize',
-      background: 'red',
     };
   }, [position]);
 
