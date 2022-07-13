@@ -1,6 +1,6 @@
 {
   "name": "hwc",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A react Headless Week Calendar toolkit to build calendars like Google Calendar.",
   "author": "Alexandre TRICHOT <contact@alexandretrichot.fr> (https://alexandretrichot.fr)",
   "homepage": "https://github.com/alexandretrichot/hwc",
