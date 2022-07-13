@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { DAY_IN_MILLIS } from '../constants';
+import { DAY_IN_MILLIS, HOUR_IN_MILLIS } from '../constants';
 import { useHwcContext } from '../contexts/HwcContext';
 
 export type RenderCellProps = {
@@ -8,6 +8,7 @@ export type RenderCellProps = {
   cellWidth: number;
   x?: 'start' | 'end';
   y?: 'start' | 'end';
+  day: Date;
   date: Date;
 };
 
@@ -72,7 +73,8 @@ export const HwcGrid = React.forwardRef<HTMLDivElement, HwcGridProps>(
                       },
                       x,
                       y,
-                      date: d,
+                      day: d,
+                      date: new Date(d.getTime() + l * HOUR_IN_MILLIS),
                     }),
                     node => React.cloneElement(node, { 'week-picker-cell': '' })
                   )}
