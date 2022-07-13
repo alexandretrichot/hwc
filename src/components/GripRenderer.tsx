@@ -1,4 +1,5 @@
 import React, { useMemo, useCallback } from 'react';
+import { useHwcContext } from '../contexts/HwcContext';
 import { HwcEvent } from '../types';
 
 export type GripPosition = 'start' | 'end';
@@ -36,6 +37,8 @@ export const GripRenderer = <EvType extends HwcEvent>({
   position,
   renderGrip,
 }: GripRendererProps<EvType>): React.ReactElement => {
+  const { setEventResizing } = useHwcContext<EvType>();
+
   const style = useMemo<GripStyle>(() => {
     return {
       position: 'absolute',
@@ -47,12 +50,15 @@ export const GripRenderer = <EvType extends HwcEvent>({
     };
   }, [position]);
 
-  const onMouseDownHandler = useCallback((ev: React.MouseEvent) => {
-    ev.preventDefault();
-    ev.stopPropagation();
+  const onMouseDownHandler = useCallback(
+    (ev: React.MouseEvent) => {
+      ev.preventDefault();
+      ev.stopPropagation();
 
-    console.log('resize grabbed');
-  }, []);
+      setEventResizing(index, position);
+    },
+    [setEventResizing, index, position]
+  );
 
   const props = useMemo<RenderGripProps<EvType>>(() => {
     return {

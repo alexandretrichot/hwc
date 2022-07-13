@@ -1,4 +1,5 @@
 import React from 'react';
+import { GripPosition } from '../components/GripRenderer';
 import { HwcEvent, Pos } from '../types';
 
 export type IHwcContext<EvType extends HwcEvent> = {
@@ -18,6 +19,7 @@ export type IHwcContext<EvType extends HwcEvent> = {
   setStartDragDate: (date?: Date) => void;
 
   setEventMoving: (index?: number) => void;
+  setEventResizing: (index?: number, grip?: GripPosition) => void;
 
   addEvent: (ev: HwcEvent) => void;
   updateEvent: (

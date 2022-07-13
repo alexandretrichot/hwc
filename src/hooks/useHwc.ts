@@ -1,9 +1,11 @@
 import { useCallback, useMemo, useState } from 'react';
+import { GripPosition } from '../components/GripRenderer';
 import { IHwcContext } from '../contexts/HwcContext';
 import { Pos, HwcEvent } from '../types';
 import { posToDate } from '../utils/posToDate';
 import { startOfDay } from '../utils/round';
 import { useMoveEvent } from './useMoveEvent';
+import { useResizeEvent } from './useResizeEvent';
 import { useShadowEvent } from './useShadowEvent';
 
 export type UseHwcProps<EvType extends HwcEvent> = {
@@ -49,11 +51,15 @@ export const useHwc = <EvType extends HwcEvent>(
   // shadow event
   const [shadowEvent, setStartDragDate] = useShadowEvent(date);
 
-  const moveEventHandler = useCallback(
+  // move and resize
+  const internalUpdateEventHandler = useCallback(
     (evIndex: number, newEvent: HwcEvent) => {
       const ev = events[evIndex];
 
-      if (ev.startDate.getTime() !== newEvent.startDate.getTime())
+      if (
+        ev.startDate.getTime() !== newEvent.startDate.getTime() ||
+        ev.endDate.getTime() !== newEvent.endDate.getTime()
+      )
         onUpdateEvent(
           evIndex,
           {
@@ -66,7 +72,8 @@ export const useHwc = <EvType extends HwcEvent>(
     [events, onUpdateEvent]
   );
 
-  const [setEventMoving] = useMoveEvent(date, moveEventHandler);
+  const [setEventMoving] = useMoveEvent(date, internalUpdateEventHandler);
+  const [setEventResizing] = useResizeEvent(date, internalUpdateEventHandler);
 
   // handlers
   const addEventHandler = useCallback((ev: HwcEvent) => onAddEvent(ev), [
@@ -89,6 +96,17 @@ export const useHwc = <EvType extends HwcEvent>(
     [setEventMoving, events]
   );
 
+  const setEventResizingHandler = useCallback(
+    (evIndex?: number, grip?: GripPosition) => {
+      setEventResizing(
+        evIndex !== undefined ? events[evIndex] : undefined,
+        evIndex,
+        evIndex !== undefined ? grip : undefined
+      );
+    },
+    [setEventResizing, events]
+  );
+
   return {
     pos,
     date,
@@ -104,6 +122,7 @@ export const useHwc = <EvType extends HwcEvent>(
     setWidth,
 
     setEventMoving: setEventMovingHandler,
+    setEventResizing: setEventResizingHandler,
 
     shadowEvent,
     setStartDragDate,
