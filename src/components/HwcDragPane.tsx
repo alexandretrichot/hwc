@@ -1,9 +1,9 @@
 import React, { useCallback, useRef, useState } from 'react';
-import useIsomorphicLayoutEffect from 'use-isomorphic-layout-effect';
 import { HOUR_IN_MILLIS } from '../constants';
 import { useHwcContext } from '../contexts/HwcContext';
 import { roundToQuarterHour, roundToSemiHour } from '../utils/round';
 import ResizeObserver from 'resize-observer-polyfill';
+import { useIsomorphicLayoutEffect } from '../hooks/useIsomorphicLayoutEffect';
 
 export type HwcDragPaneProps = React.ComponentProps<'div'> & {};
 
