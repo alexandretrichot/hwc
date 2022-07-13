@@ -28,14 +28,14 @@ export const Basic: React.FC<BasicProps> = ({
 
   const addEventHandler = useCallback(
     (ev: HwcEvent) => {
-      //const title = prompt('Event name');
-      //if (!title) return;
+      const title = prompt('Event name');
+      if (!title) return;
 
       setEvents([
         ...events,
         {
           ...ev,
-          title: 'Event',
+          title,
         },
       ]);
     },
@@ -71,12 +71,14 @@ export const Basic: React.FC<BasicProps> = ({
         <HwcHeader />
       </div>
       <div
-        className='grid'
+        className='grid border border-black/30'
         style={{ gridTemplateColumns: `50px minmax(0, 1fr)` }}
       >
-        <div></div>
+        <div>
+          {new Array(24).fill(0).map((_, index) => <div key={index} style={{height: `${calendar.cellHeight}px`}} className='border-t first:border-t-0 border-t-black/30 border-r border-r-black/30 text-right p-2'>{index + 1}h</div>)}
+        </div>
         <HwcDragPane>
-          <HwcGrid />
+          <HwcGrid renderCell={({style, date}) => <div style={style} className={clsx((date.getHours() + 1 === 12 || date.getHours() + 1 === 13) && 'bg-black/5' )} />} />
           <HwcEventsRenderer<CustomEvent>
             renderCard={({ rect, event, isFirst }) => (
               <div
