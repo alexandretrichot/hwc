@@ -20,6 +20,7 @@
   "files": [
     "dist/**"
   ],
+  "sideEffects": false,
   "license": "MIT",
   "main": "dist/index.js",
   "module": "dist/hwc.esm.js",
