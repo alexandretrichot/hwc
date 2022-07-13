@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { IHwcContext } from '../contexts/HwcContext';
 import { Pos, HwcEvent } from '../types';
 import { posToDate } from '../utils/posToDate';
@@ -49,19 +49,24 @@ export const useHwc = <EvType extends HwcEvent>(
   // shadow event
   const [shadowEvent, setStartDragDate] = useShadowEvent(date);
 
-  // move events
-  const [setEventMoving] = useMoveEvent(date, (evIndex, newEvent) => {
-    const ev = events[evIndex];
+  const moveEventHandler = useCallback(
+    (evIndex: number, newEvent: HwcEvent) => {
+      const ev = events[evIndex];
 
-    onUpdateEvent(
-      evIndex,
-      {
-        ...ev,
-        ...newEvent,
-      },
-      ev
-    );
-  });
+      if (ev.startDate.getTime() !== newEvent.startDate.getTime())
+        onUpdateEvent(
+          evIndex,
+          {
+            ...ev,
+            ...newEvent,
+          },
+          ev
+        );
+    },
+    [events, onUpdateEvent]
+  );
+
+  const [setEventMoving] = useMoveEvent(date, moveEventHandler);
 
   // handlers
   const addEventHandler = useCallback((ev: HwcEvent) => onAddEvent(ev), [

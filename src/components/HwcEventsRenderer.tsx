@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useHwcContext } from '../contexts/HwcContext';
 import { useCards } from '../hooks/useCards';
 import { useShadowCards } from '../hooks/useShadowCards';
@@ -45,7 +45,6 @@ export const HwcEventsRenderer = <EvType extends HwcEvent>({
           }}
           onMouseDown={ev => {
             ev.preventDefault();
-            console.log(cardProps.index);
             setEventMoving(cardProps.index);
           }}
         >

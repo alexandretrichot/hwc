@@ -65,7 +65,7 @@ export const GripRenderer = <EvType extends HwcEvent>({
         onMouseDown: onMouseDownHandler,
       },
     };
-  }, [event, index, position, onMouseDownHandler]);
+  }, [event, index, position, style, onMouseDownHandler]);
 
   if (renderGrip) return <>{renderGrip(props)}</>;
 

@@ -49,7 +49,7 @@ export const useMoveEvent = (
       },
       moveState.startEvent
     );
-  }, [moveState, date]);
+  }, [moveState, date, updateEventHandler]);
 
   useEffect(() => {
     if (!moveState) return;
