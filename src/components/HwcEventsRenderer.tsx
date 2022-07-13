@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useHwcContext } from '../contexts/HwcContext';
 import { useCards } from '../hooks/useCards';
 import { useShadowCards } from '../hooks/useShadowCards';
 import { HwcEvent, Rect } from '../types';
+import { GripRenderer, RenderGripProps } from './GripRenderer';
 
 export type RenderCardProps<EvType extends HwcEvent> = {
   event: EvType;
@@ -17,12 +19,16 @@ export type RenderShadowCardProps = RenderCardProps<HwcEvent>;
 export type HwcEventsRendererProps<EvType extends HwcEvent> = {
   renderCard: (props: RenderCardProps<EvType>) => React.ReactNode;
   renderShadowCard: (props: RenderShadowCardProps) => React.ReactNode;
+  renderGrip?: (props: RenderGripProps<EvType>) => React.ReactNode;
 };
 
 export const HwcEventsRenderer = <EvType extends HwcEvent>({
   renderCard,
   renderShadowCard,
+  renderGrip,
 }: HwcEventsRendererProps<EvType>): React.ReactElement => {
+  const { setEventMoving } = useHwcContext<EvType>();
+
   const cards = useCards<EvType>();
   const shadowCards = useShadowCards();
 
@@ -37,9 +43,30 @@ export const HwcEventsRenderer = <EvType extends HwcEvent>({
             left: `${cardProps.rect.left}px`,
             top: `${cardProps.rect.top}px`,
           }}
+          onMouseDown={ev => {
+            ev.preventDefault();
+            console.log(cardProps.index);
+            setEventMoving(cardProps.index);
+          }}
         >
           {renderCard(cardProps)}
-          <div className='' />
+
+          {cardProps.isFirst && (
+            <GripRenderer
+              position='start'
+              event={cardProps.event}
+              index={cardProps.index}
+              renderGrip={renderGrip}
+            />
+          )}
+          {cardProps.isLast && (
+            <GripRenderer
+              position='end'
+              event={cardProps.event}
+              index={cardProps.index}
+              renderGrip={renderGrip}
+            />
+          )}
         </div>
       ))}
       {shadowCards.map((shadowCardProps, index) => (

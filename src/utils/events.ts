@@ -16,7 +16,9 @@ export const buildIsEventVisibleFilter = (
   };
 };
 
-export const getCroppedEventsByDay = <EvType extends HwcEvent>(ev: EvType): EvType[] => {
+export const getCroppedEventsByDay = <EvType extends HwcEvent>(
+  ev: EvType
+): EvType[] => {
   const events: EvType[] = [];
 
   const evEndMillis = ev.endDate.getTime();

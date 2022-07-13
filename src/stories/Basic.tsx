@@ -42,12 +42,22 @@ export const Basic: React.FC<BasicProps> = ({
     [events, setEvents]
   );
 
+  const updateEventHandler = useCallback(
+    (eventIndex: number, newEvent: CustomEvent) => {
+      setEvents(
+        events.map((ev, index) => (eventIndex === index ? newEvent : ev))
+      );
+    },
+    [events, setEvents]
+  );
+
   const calendar = useHwc({
     startDay,
     daysCount: daysToShow,
     cellHeight,
     events,
-    onAddEventRequest: addEventHandler,
+    onAddEvent: addEventHandler,
+    onUpdateEvent: updateEventHandler,
   });
 
   return (
@@ -104,7 +114,6 @@ export const Basic: React.FC<BasicProps> = ({
           />
         </HwcDragPane>
       </div>
-      {/* <div className='w-screen h-screen fixed top-0 left-0 bg-slate-500/25' /> */}
     </HwcProvider>
   );
 };

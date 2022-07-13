@@ -70,5 +70,5 @@ export const useShadowCards = () => {
           },
         };
       });
-  }, [cellWidth, startDay, daysCount, shadowEvent, cellHeight]);
+  }, [cellWidth, startDay, shadowEvent, cellHeight, eventsFilter]);
 };

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { IHwcContext } from '../contexts/HwcContext';
 import { Pos, HwcEvent } from '../types';
 import { posToDate } from '../utils/posToDate';
@@ -13,8 +13,12 @@ export type UseHwcProps<EvType extends HwcEvent> = {
 
   events?: EvType[];
 
-  onAddEventRequest?: (ev: HwcEvent) => void;
-  onEventMove?: (index: number, newEvent: EvType, lastEvent: EvType) => void;
+  onAddEvent?: (ev: HwcEvent) => void;
+  onUpdateEvent?: (
+    eventIndex: number,
+    newEvent: EvType,
+    previousEvent: EvType
+  ) => void;
 };
 
 export const useHwc = <EvType extends HwcEvent>(
@@ -25,7 +29,8 @@ export const useHwc = <EvType extends HwcEvent>(
     cellHeight = 50,
     daysCount = 7,
     events = [],
-    onAddEventRequest = () => {},
+    onAddEvent = () => {},
+    onUpdateEvent = () => {},
   } = props;
 
   const normalizedStartDay = useMemo(() => startOfDay(startDay), [startDay]);
@@ -44,17 +49,40 @@ export const useHwc = <EvType extends HwcEvent>(
   // shadow event
   const [shadowEvent, setStartDragDate] = useShadowEvent(date);
 
-  const {} = useMoveEvent();
-  
+  // move events
+  const [setEventMoving] = useMoveEvent(date, (evIndex, newEvent) => {
+    const ev = events[evIndex];
+
+    onUpdateEvent(
+      evIndex,
+      {
+        ...ev,
+        ...newEvent,
+      },
+      ev
+    );
+  });
+
   // handlers
-  const requestAddEventHandler = useCallback(
-    (ev: HwcEvent) => {
-      onAddEventRequest(ev);
-    },
-    [onAddEventRequest]
+  const addEventHandler = useCallback((ev: HwcEvent) => onAddEvent(ev), [
+    onAddEvent,
+  ]);
+
+  const updateEventHandler = useCallback(
+    (eventIndex: number, newEvent: EvType, previousEvent: EvType) =>
+      onUpdateEvent(eventIndex, newEvent, previousEvent),
+    [onUpdateEvent]
   );
 
-  
+  const setEventMovingHandler = useCallback(
+    (evIndex?: number) => {
+      setEventMoving(
+        evIndex !== undefined ? events[evIndex] : undefined,
+        evIndex
+      );
+    },
+    [setEventMoving, events]
+  );
 
   return {
     pos,
@@ -70,8 +98,11 @@ export const useHwc = <EvType extends HwcEvent>(
     setPos,
     setWidth,
 
+    setEventMoving: setEventMovingHandler,
+
     shadowEvent,
     setStartDragDate,
-    requestAddEventHandler,
+    addEvent: addEventHandler,
+    updateEvent: updateEventHandler,
   };
 };

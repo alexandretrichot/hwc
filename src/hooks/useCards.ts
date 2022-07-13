@@ -20,7 +20,7 @@ export const useCards = <EvType extends HwcEvent>() => {
 
   return useMemo(() => {
     return events
-      .map(ev => ({ event: ev }))
+      .map((event, index) => ({ event, index }))
       .filter(c => eventsFilter(c.event))
       .map(c => {
         const evts = getCroppedEventsByDay(c.event);
@@ -33,7 +33,6 @@ export const useCards = <EvType extends HwcEvent>() => {
       .map(croppeds =>
         croppeds.map((card, index) => ({
           ...card,
-          index: index,
           isFirst: index === 0,
           isLast: index === croppeds.length - 1,
         }))
@@ -67,5 +66,5 @@ export const useCards = <EvType extends HwcEvent>() => {
           },
         };
       });
-  }, [events, cellWidth, startDay, daysCount, cellHeight]);
+  }, [events, cellWidth, startDay, cellHeight, eventsFilter]);
 };

@@ -16,7 +16,15 @@ export type IHwcContext<EvType extends HwcEvent> = {
 
   shadowEvent?: HwcEvent;
   setStartDragDate: (date?: Date) => void;
-  requestAddEventHandler: (ev: HwcEvent) => void;
+
+  setEventMoving: (index?: number) => void;
+
+  addEvent: (ev: HwcEvent) => void;
+  updateEvent: (
+    eventIndex: number,
+    newEvent: EvType,
+    previousEvent: EvType
+  ) => void;
 };
 
 export const HwcContext = React.createContext<IHwcContext<HwcEvent> | null>(
@@ -34,7 +42,9 @@ export const HwcProvider = <EvType extends HwcEvent>({
   value,
   children,
 }: HwcProviderProps<EvType>): React.ReactElement => {
-  return <HwcContext.Provider value={value}>{children}</HwcContext.Provider>;
+  const Ctx = HwcContext as React.Context<IHwcContext<EvType> | null>;
+
+  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 };
 
 export const useHwcContext = <EvType extends HwcEvent>() => {

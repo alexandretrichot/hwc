@@ -23,7 +23,7 @@ export const HwcDragPane = React.forwardRef<HTMLDivElement, HwcDragPaneProps>(
       date,
       setWidth,
       setStartDragDate,
-      requestAddEventHandler,
+      addEvent,
       shadowEvent,
       cellHeight,
     } = useHwcContext();
@@ -94,11 +94,11 @@ export const HwcDragPane = React.forwardRef<HTMLDivElement, HwcDragPaneProps>(
       const dragEndHandler = () => {
         if (mouseDownDate.current) {
           if (shadowEvent) {
-            requestAddEventHandler(shadowEvent);
+            addEvent(shadowEvent);
           } else {
             const roundedDate = roundToSemiHour(date);
 
-            requestAddEventHandler({
+            addEvent({
               startDate: roundedDate,
               endDate: new Date(roundedDate.getTime() + 2 * HOUR_IN_MILLIS),
             });
@@ -114,7 +114,7 @@ export const HwcDragPane = React.forwardRef<HTMLDivElement, HwcDragPaneProps>(
       return () => {
         window.removeEventListener('mouseup', dragEndHandler);
       };
-    }, [setStartDragDate, requestAddEventHandler, shadowEvent, date]);
+    }, [setStartDragDate, addEvent, shadowEvent, date]);
 
     return (
       <div
