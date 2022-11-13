@@ -35,8 +35,8 @@
     "lint": "tsdx lint src",
     "prepare": "tsdx build",
     "size": "size-limit",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "storybook": "NODE_OPTIONS=--openssl-legacy-provider start-storybook -p 6006",
+    "build-storybook": "NODE_OPTIONS=--openssl-legacy-provider build-storybook"
   },
   "husky": {
     "hooks": {
