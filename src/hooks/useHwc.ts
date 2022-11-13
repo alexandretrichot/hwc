@@ -19,12 +19,12 @@ export type UseHwcProps<EvType extends HwcEvent> = {
   onUpdateEvent?: (
     eventIndex: number,
     newEvent: EvType,
-    previousEvent: EvType
+    previousEvent: EvType,
   ) => void;
 };
 
 export const useHwc = <EvType extends HwcEvent>(
-  props: UseHwcProps<EvType> = {}
+  props: UseHwcProps<EvType> = {},
 ): IHwcContext<EvType> => {
   const {
     startDay = new Date(),
@@ -45,7 +45,7 @@ export const useHwc = <EvType extends HwcEvent>(
   const [pos, setPos] = useState<Pos>({ x: 0, y: 0 });
   const date = useMemo(
     () => posToDate(pos, width, normalizedStartDay, cellHeight, daysCount),
-    [pos, width, normalizedStartDay, cellHeight, daysCount]
+    [pos, width, normalizedStartDay, cellHeight, daysCount],
   );
 
   // shadow event
@@ -66,10 +66,10 @@ export const useHwc = <EvType extends HwcEvent>(
             ...ev,
             ...newEvent,
           },
-          ev
+          ev,
         );
     },
-    [events, onUpdateEvent]
+    [events, onUpdateEvent],
   );
 
   const [setEventMoving] = useMoveEvent(date, internalUpdateEventHandler);
@@ -83,17 +83,17 @@ export const useHwc = <EvType extends HwcEvent>(
   const updateEventHandler = useCallback(
     (eventIndex: number, newEvent: EvType, previousEvent: EvType) =>
       onUpdateEvent(eventIndex, newEvent, previousEvent),
-    [onUpdateEvent]
+    [onUpdateEvent],
   );
 
   const setEventMovingHandler = useCallback(
     (evIndex?: number) => {
       setEventMoving(
         evIndex !== undefined ? events[evIndex] : undefined,
-        evIndex
+        evIndex,
       );
     },
-    [setEventMoving, events]
+    [setEventMoving, events],
   );
 
   const setEventResizingHandler = useCallback(
@@ -101,10 +101,10 @@ export const useHwc = <EvType extends HwcEvent>(
       setEventResizing(
         evIndex !== undefined ? events[evIndex] : undefined,
         evIndex,
-        evIndex !== undefined ? grip : undefined
+        evIndex !== undefined ? grip : undefined,
       );
     },
-    [setEventResizing, events]
+    [setEventResizing, events],
   );
 
   return {

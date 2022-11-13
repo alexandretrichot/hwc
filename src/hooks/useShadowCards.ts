@@ -19,7 +19,7 @@ export const useShadowCards = () => {
 
   const eventsFilter = useMemo(
     () => buildIsEventVisibleFilter(startDay, daysCount),
-    [startDay, daysCount]
+    [startDay, daysCount],
   );
 
   return useMemo(() => {
@@ -39,7 +39,7 @@ export const useShadowCards = () => {
           index: index,
           isFirst: index === 0,
           isLast: index === croppeds.length - 1,
-        }))
+        })),
       )
       .flat()
       .filter(c => eventsFilter(c.event))

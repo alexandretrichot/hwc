@@ -15,7 +15,7 @@ export const useCards = <EvType extends HwcEvent>() => {
 
   const eventsFilter = useMemo(
     () => buildIsEventVisibleFilter(startDay, daysCount),
-    [startDay, daysCount]
+    [startDay, daysCount],
   );
 
   return useMemo(() => {
@@ -35,7 +35,7 @@ export const useCards = <EvType extends HwcEvent>() => {
           ...card,
           isFirst: index === 0,
           isLast: index === croppeds.length - 1,
-        }))
+        })),
       )
       .flat()
       .filter(c => eventsFilter(c.event))

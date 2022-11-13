@@ -4,7 +4,7 @@ import { startOfDay } from './round';
 
 export const buildIsEventVisibleFilter = (
   startDay: Date,
-  daysCount: number
+  daysCount: number,
 ) => {
   const startMillis = startOfDay(startDay).getTime();
   const endMillis = startMillis + daysCount * DAY_IN_MILLIS;
@@ -17,7 +17,7 @@ export const buildIsEventVisibleFilter = (
 };
 
 export const getCroppedEventsByDay = <EvType extends HwcEvent>(
-  ev: EvType
+  ev: EvType,
 ): EvType[] => {
   const events: EvType[] = [];
 
@@ -34,7 +34,7 @@ export const getCroppedEventsByDay = <EvType extends HwcEvent>(
     events.push({
       ...ev,
       startDate: new Date(
-        lastCroppedEvent ? lastCroppedEvent.endDate : ev.startDate
+        lastCroppedEvent ? lastCroppedEvent.endDate : ev.startDate,
       ),
       endDate: new Date(isOverflow ? nextDayMillis : evEndMillis),
     });

@@ -12,7 +12,7 @@ type ReziseEventState = {
 
 export const useResizeEvent = (
   date: Date,
-  updateEventHandler: (eventIndex: number, newEvent: HwcEvent) => void
+  updateEventHandler: (eventIndex: number, newEvent: HwcEvent) => void,
 ) => {
   const [resizeState, setResizeState] = useState<ReziseEventState>();
 
@@ -26,28 +26,28 @@ export const useResizeEvent = (
               date,
               grip,
             }
-          : undefined
+          : undefined,
       ),
-    [setResizeState, date]
+    [setResizeState, date],
   );
 
   useEffect(() => {
     if (!resizeState) return;
 
     const delta = roundToQuarterHour(
-      new Date(resizeState.date.getTime() - date.getTime())
+      new Date(resizeState.date.getTime() - date.getTime()),
     ).getTime();
 
     updateEventHandler(resizeState.evIndex, {
       startDate: new Date(
         resizeState.grip === 'start'
           ? resizeState.event.startDate.getTime() - delta
-          : resizeState.event.startDate
+          : resizeState.event.startDate,
       ),
       endDate: new Date(
         resizeState.grip === 'end'
           ? resizeState.event.endDate.getTime() - delta
-          : resizeState.event.endDate
+          : resizeState.event.endDate,
       ),
     });
   }, [resizeState, date, updateEventHandler]);

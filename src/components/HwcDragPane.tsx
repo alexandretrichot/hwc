@@ -15,7 +15,7 @@ export const HwcDragPane = React.forwardRef<HTMLDivElement, HwcDragPaneProps>(
       children,
       ...props
     },
-    ref
+    ref,
   ) => {
     const {
       setPos,
@@ -61,7 +61,7 @@ export const HwcDragPane = React.forwardRef<HTMLDivElement, HwcDragPaneProps>(
 
         onMouseDown(ev);
       },
-      [date, onMouseDown]
+      [date, onMouseDown],
     );
 
     const mouseMoveHandler = useCallback<
@@ -86,7 +86,7 @@ export const HwcDragPane = React.forwardRef<HTMLDivElement, HwcDragPaneProps>(
           setStartDragDate(mouseDownDate.current);
         }
       },
-      [setPos, onMouseMove, shadowEvent, date, setStartDragDate]
+      [setPos, onMouseMove, shadowEvent, date, setStartDragDate],
     );
 
     useIsomorphicLayoutEffect(() => {
@@ -131,5 +131,5 @@ export const HwcDragPane = React.forwardRef<HTMLDivElement, HwcDragPaneProps>(
         {children}
       </div>
     );
-  }
+  },
 );

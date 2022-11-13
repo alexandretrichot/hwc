@@ -57,7 +57,7 @@ export const GripRenderer = <EvType extends HwcEvent>({
 
       setEventResizing(index, position);
     },
-    [setEventResizing, index, position]
+    [setEventResizing, index, position],
   );
 
   const props = useMemo<RenderGripProps<EvType>>(() => {

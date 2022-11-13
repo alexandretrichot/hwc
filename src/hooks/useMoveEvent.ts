@@ -14,8 +14,8 @@ export const useMoveEvent = (
   updateEventHandler: (
     eventIndex: number,
     newEvent: HwcEvent,
-    startEvent: HwcEvent
-  ) => void
+    startEvent: HwcEvent,
+  ) => void,
 ) => {
   const [moveState, setMoveState] = useState<MoveEventState>();
 
@@ -29,16 +29,16 @@ export const useMoveEvent = (
               date,
               dragDelta: date.getTime() - event.startDate.getTime(),
             }
-          : undefined
+          : undefined,
       ),
-    [setMoveState, date]
+    [setMoveState, date],
   );
 
   useEffect(() => {
     if (!moveState) return;
 
     const delta = roundToQuarterHour(
-      new Date(moveState.date.getTime() - date.getTime())
+      new Date(moveState.date.getTime() - date.getTime()),
     ).getTime();
 
     updateEventHandler(
@@ -47,7 +47,7 @@ export const useMoveEvent = (
         startDate: new Date(moveState.startEvent.startDate.getTime() - delta),
         endDate: new Date(moveState.startEvent.endDate.getTime() - delta),
       },
-      moveState.startEvent
+      moveState.startEvent,
     );
   }, [moveState, date, updateEventHandler]);
 

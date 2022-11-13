@@ -25,12 +25,12 @@ export type IHwcContext<EvType extends HwcEvent> = {
   updateEvent: (
     eventIndex: number,
     newEvent: EvType,
-    previousEvent: EvType
+    previousEvent: EvType,
   ) => void;
 };
 
 export const HwcContext = React.createContext<IHwcContext<HwcEvent> | null>(
-  null
+  null,
 );
 
 export const OldHwcProvider = HwcContext.Provider;
@@ -53,7 +53,7 @@ export const useHwcContext = <EvType extends HwcEvent>() => {
   const ctx = React.useContext(HwcContext);
   if (ctx === null)
     throw new Error(
-      'No WeekPicker Context found. Please Wrap Hwc components in <HwcProvider />'
+      'No WeekPicker Context found. Please Wrap Hwc components in <HwcProvider />',
     );
 
   return (ctx as unknown) as IHwcContext<EvType>;

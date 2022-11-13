@@ -76,7 +76,8 @@ export const HwcGrid = React.forwardRef<HTMLDivElement, HwcGridProps>(
                       day: d,
                       date: new Date(d.getTime() + l * HOUR_IN_MILLIS),
                     }),
-                    node => React.cloneElement(node, { 'week-picker-cell': '' })
+                    node =>
+                      React.cloneElement(node, { 'week-picker-cell': '' }),
                   )}
                 </Fragment>
               );
@@ -85,5 +86,5 @@ export const HwcGrid = React.forwardRef<HTMLDivElement, HwcGridProps>(
         ))}
       </div>
     );
-  }
+  },
 );

@@ -6,7 +6,7 @@ export const posToDate = (
   width: number,
   startDay: Date,
   hourHeight: number,
-  daysCount: number
+  daysCount: number,
 ): Date => {
   const minuteHeight = 60 / hourHeight;
   const minutesDay = pos.y * minuteHeight;
@@ -16,6 +16,6 @@ export const posToDate = (
   return new Date(
     startDay.getTime() +
       dayInGrid * DAY_IN_MILLIS +
-      minutesDay * MINUTE_IN_MILLIS
+      minutesDay * MINUTE_IN_MILLIS,
   );
 };
